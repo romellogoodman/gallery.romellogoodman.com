@@ -1,17 +1,83 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, { useRef } from "react";
+import { createRoot } from "react-dom/client";
+import { useP5, useScaledCanvas } from "./hooks";
+import "./styles.css";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const Controls = (props) => {
+  return (
+    <div className="controls">
+      <div>
+        <label>Course</label>
+        <select>
+          <option>Option A</option>
+          <option>Option B</option>
+          <option>Option C</option>
+        </select>
+      </div>
+      <div>
+        <label>Student</label>
+        <select>
+          <option>Option A</option>
+          <option>Option B</option>
+          <option>Option C</option>
+        </select>
+      </div>
+      <button>Generate</button>
+      <button>Capture</button>
+      <a href="/about">
+        <p>About</p>
+      </a>
+    </div>
+  );
+};
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const Sketch = (props) => {
+  const { draw, setup, ...restOfP5Functions } = props;
+  const {
+    height,
+    width,
+    ref: responsiveRef,
+  } = useScaledCanvas(props.width, props.height);
+  const canvasRef = useRef();
+
+  useP5({
+    ...restOfP5Functions,
+    draw,
+    setup,
+    height,
+    width,
+    ref: canvasRef,
+  });
+
+  return (
+    <div className="page" ref={responsiveRef}>
+      <div
+        className="container"
+        ref={canvasRef}
+        style={{ height: "100vh", width: "100vw" }}
+      />
+    </div>
+  );
+};
+
+const App = () => {
+  const sketch = {
+    draw: (p5) => {
+      p5.circle(p5.width / 2, p5.height / 2, 100);
+    },
+    height: 500,
+    width: 500,
+  };
+
+  return (
+    <div>
+      <Controls />
+      <Sketch {...sketch} />
+    </div>
+  );
+};
+
+const container = document.getElementById("root");
+const root = createRoot(container);
+
+root.render(<App tab="home" />);

@@ -1,0 +1,31 @@
+body {
+  margin: 0px;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.container canvas {
+  box-shadow: rgb(0 0 0 / 10%) 0px 1px 5px 0px;
+}
+
+.controls {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+}
+
+.controls div, .controls button {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.controls label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
